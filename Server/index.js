@@ -2,6 +2,10 @@ const express = require("express");
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
+const connectDB = require("./config/DB");
+const Message = require("./models/messages");
+
+connectDB();
 
 const PORT = 3001;
 
@@ -28,9 +32,24 @@ io.on("connection", (socket) => {
     console.log(`user with id ${socket.id} joined room ${data}`);
   });
 
-  socket.on("sendMessage", (data) => {
+  socket.on("sendMessage", async (data) => {
     console.log(data);
-    socket.to(data.room).emit("recieveMessage", data);
+
+    // Save the message to the database
+    try {
+      const newMessage = new Message({
+        sender: data.sender,
+        content: data.message,
+      });
+
+      const savedMessage = await newMessage.save();
+      console.log("Message saved to the database:", savedMessage);
+
+      // Broadcast the message to others in the room
+      socket.to(data.room).emit("receiveMessage", savedMessage);
+    } catch (error) {
+      console.error("Error saving message to the database:", error);
+    }
   });
 
   socket.on("disconnect", () => {

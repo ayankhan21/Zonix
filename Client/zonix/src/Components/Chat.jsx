@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
@@ -24,10 +25,25 @@ const Chat = ({ socket, username, room }) => {
 
   console.log(message);
 
+  // useEffect(() => {
+  //   socket.on("recieveMessage", (data) => {
+  //     setMessageList((list) => [...list, data]);
+  //   });
+  // }, [socket]);
+
   useEffect(() => {
-    socket.on("recieveMessage", (data) => {
-      setMessageList((list) => [...list, data]);
-    });
+    const handleReceiveMessage = (data) => {
+      // setMessageList((list) => [...list, data]);
+      console.log(data)
+    };
+
+    // Subscribe to the event
+    socket.on("recieveMessage", handleReceiveMessage);
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      socket.off("recieveMessage", handleReceiveMessage);
+    };
   }, [socket]);
 
   return (
