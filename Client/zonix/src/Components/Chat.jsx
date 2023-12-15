@@ -2,71 +2,111 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import ChatInput from "./ChatInput"; // Make sure to import the ChatInput component
+import { decryptMessage, encryptMessage } from "../helper";
 import "../App.css";
 
 const Chat = ({ socket, username, room }) => {
-  const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
+  const [coordinates, setCoordinates] = useState({});
+  const [file, setFile] = useState({});
+  const [sender, setSender] = useState("");
 
-  const sendMessage = async () => {
+  useEffect(() => {
+    const handleReceiveMessage = (data) => {
+      setMessageList((list) => [...list, data]);
+      setSender(data.sender);
+    };
+
+    const handleMouseMovement = (data) => {
+      setCoordinates(data);
+    };
+
+    socket.off("receiveMessage");
+    socket.off("mouseEvent");
+
+    socket.on("mouseEvent", handleMouseMovement);
+
+    socket.on("receiveMessage", handleReceiveMessage);
+
+    return () => {
+      socket.off("receiveMessage", handleReceiveMessage);
+    };
+  }, [socket]);
+
+  const sendMessage = (message) => {
     if (socket && message.trim() !== "") {
       const messageData = {
         room,
         sender: username,
-        message,
+        message: encryptMessage(message),
+        file,
         time:
           new Date(Date.now()).getHours() +
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-      await socket.emit("sendMessage", messageData);
+      socket.emit("sendMessage", messageData);
     }
   };
 
-  console.log(message);
+  const handleMouseMove = (event) => {
+    const x = event.clientX; // X coordinate relative to the viewport
+    const y = event.clientY; // Y coordinate relative to the viewport
 
-  // useEffect(() => {
-  //   socket.on("recieveMessage", (data) => {
-  //     setMessageList((list) => [...list, data]);
-  //   });
-  // }, [socket]);
+    // Do something with x and y coordinates, e.g., log them
+    if (socket) {
+      socket.emit("mouseCoordinates", { x, y, room });
+    }
+  };
 
   useEffect(() => {
-    const handleReceiveMessage = (data) => {
-      // setMessageList((list) => [...list, data]);
-      console.log(data)
-    };
+    // Add event listener when the component mounts
+    document.addEventListener("mousemove", handleMouseMove);
 
-    // Subscribe to the event
-    socket.on("recieveMessage", handleReceiveMessage);
-
-    // Clean up the event listener when the component is unmounted
+    // Clean up the event listener when the component unmounts
     return () => {
-      socket.off("recieveMessage", handleReceiveMessage);
+      document.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [socket]);
+  }, []);
+
+  console.log(coordinates);
 
   return (
     <div className="chat-window">
+      <div
+        style={{
+          position: "absolute",
+          left: `${coordinates.x}px`,
+          top: `${coordinates.y}px`,
+          height: "20px",
+          width: "20px",
+          borderRadius: "5px",
+          background: "red",
+        }}
+      />
       <div className="chat-header">
-        <p>Live chat</p>
+        <p>Live chat {sender === username ? "" : sender}</p>
       </div>
       <div className="chat-body">
         {messageList?.map((msg) => (
-          <h1>{msg.message}</h1>
+          <div key={msg._id}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <p
+                style={{
+                  color: msg.sender === username ? "red" : "blue",
+                  float: msg.sender === username ? "right" : "left",
+                  textAlign: "left",
+                  maxWidth: "300px",
+                }}
+              >
+                {decryptMessage(msg.content)}
+              </p>
+            </div>
+          </div>
         ))}
       </div>
-      <div className="chat-footer">
-        <input
-          onChange={(event) => {
-            setMessage(event.target.value);
-          }}
-          type="text"
-          placeholder="Type your message"
-          name="message"
-        />
-        <button onClick={sendMessage}>&#9658;</button>
-      </div>
+      <ChatInput onSendMessage={sendMessage} setFile={setFile} />
     </div>
   );
 };

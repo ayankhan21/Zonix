@@ -39,17 +39,22 @@ io.on("connection", (socket) => {
     try {
       const newMessage = new Message({
         sender: data.sender,
-        content: data.message,
+        content: data.message || data.file,
       });
 
       const savedMessage = await newMessage.save();
       console.log("Message saved to the database:", savedMessage);
 
       // Broadcast the message to others in the room
-      socket.to(data.room).emit("receiveMessage", savedMessage);
+      // socket.to(data.room).emit("receiveMessage", savedMessage);
+      io.to(data.room).emit("receiveMessage", savedMessage);
     } catch (error) {
       console.error("Error saving message to the database:", error);
     }
+  });
+
+  socket.on("mouseCoordinates", (data) => {
+    socket.broadcast.to(data.room).emit("mouseEvent", data);
   });
 
   socket.on("disconnect", () => {
