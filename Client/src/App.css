@@ -189,3 +189,12 @@ body {
 .hide {
   opacity: 0 !important;
 }
+
+.bubble {
+  border: 1px solid black;
+  background-color: aqua;
+  width: max-content;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}

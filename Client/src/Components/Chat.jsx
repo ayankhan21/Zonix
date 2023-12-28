@@ -8,7 +8,7 @@ import "../App.css";
 
 const Chat = ({ socket, username, room }) => {
   const [messageList, setMessageList] = useState([]);
-  const [coordinates, setCoordinates] = useState({});
+  // const [coordinates, setCoordinates] = useState({});
   const [file, setFile] = useState({});
   const [sender, setSender] = useState("");
 
@@ -18,14 +18,14 @@ const Chat = ({ socket, username, room }) => {
       setSender(data.sender);
     };
 
-    const handleMouseMovement = (data) => {
-      setCoordinates(data);
-    };
+    // const handleMouseMovement = (data) => {
+    //   setCoordinates(data);
+    // };
 
     socket.off("receiveMessage");
-    socket.off("mouseEvent");
+    // socket.off("mouseEvent");
 
-    socket.on("mouseEvent", handleMouseMovement);
+    // socket.on("mouseEvent", handleMouseMovement);
 
     socket.on("receiveMessage", handleReceiveMessage);
 
@@ -50,31 +50,33 @@ const Chat = ({ socket, username, room }) => {
     }
   };
 
-  const handleMouseMove = (event) => {
-    const x = event.clientX; // X coordinate relative to the viewport
-    const y = event.clientY; // Y coordinate relative to the viewport
+  // const handleMouseMove = (event) => {
+  //   const x = event.clientX; // X coordinate relative to the viewport
+  //   const y = event.clientY; // Y coordinate relative to the viewport
 
-    // Do something with x and y coordinates, e.g., log them
-    if (socket) {
-      socket.emit("mouseCoordinates", { x, y, room });
-    }
-  };
+  //   // Do something with x and y coordinates, e.g., log them
+  //   if (socket) {
+  //     socket.emit("mouseCoordinates", { x, y, room });
+  //   }
+  // };
 
-  useEffect(() => {
-    // Add event listener when the component mounts
-    document.addEventListener("mousemove", handleMouseMove);
+  // useEffect(() => {
+  //   // Add event listener when the component mounts
+  //   document.addEventListener("mousemove", handleMouseMove);
 
-    // Clean up the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+  //   // Clean up the event listener when the component unmounts
+  //   return () => {
+  //     document.removeEventListener("mousemove", handleMouseMove);
+  //   };
+  // }, []);
 
-  console.log(coordinates);
+  console.log(messageList);
+
+  console.log(username);
 
   return (
     <div className="chat-window">
-      <div
+      {/* <div
         style={{
           position: "absolute",
           left: `${coordinates.x}px`,
@@ -84,24 +86,24 @@ const Chat = ({ socket, username, room }) => {
           borderRadius: "5px",
           background: "red",
         }}
-      />
+      /> */}
       <div className="chat-header">
         <p>Live chat {sender === username ? "" : sender}</p>
       </div>
       <div className="chat-body">
         {messageList?.map((msg) => (
-          <div key={msg._id}>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <p
-                style={{
-                  color: msg.sender === username ? "red" : "blue",
-                  float: msg.sender === username ? "right" : "left",
-                  textAlign: "left",
-                  maxWidth: "300px",
-                }}
-              >
-                {decryptMessage(msg.content)}
-              </p>
+          <div
+            style={{
+              float: msg.sender === username ? "right" : "left",
+              backgroundColor: msg.sender === username ? "red" : "blue",
+              display: "flex",
+              flexDirection: "column",
+            }}
+            key={msg._id}
+            className="bubble"
+          >
+            <div>
+              <p>{decryptMessage(msg.content)}</p>
             </div>
           </div>
         ))}

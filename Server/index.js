@@ -53,9 +53,9 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("mouseCoordinates", (data) => {
-    socket.broadcast.to(data.room).emit("mouseEvent", data);
-  });
+  // socket.on("mouseCoordinates", (data) => {
+  //   socket.broadcast.to(data.room).emit("mouseEvent", data);
+  // });
 
   socket.on("disconnect", () => {
     console.log(`Disconnected ${socket.id}`);
