@@ -1,0 +1,24 @@
+.mainContent {
+  display: flex;
+  flex-direction: column;
+}
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+  width: 100%;
+  background-color: aqua;
+  padding: 20px;
+}
+.chatlist {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+/* CHAT CARD STYLES */
+
+.chatCard {
+  display: flex;
+  align-items: center;
+}

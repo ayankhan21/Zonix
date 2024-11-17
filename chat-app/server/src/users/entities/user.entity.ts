@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('users') // The table name in PostgreSQL
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column({ length: 50 })
@@ -13,7 +13,7 @@ export class User {
   email: string | null; // Nullable for guests
 
   @Column({ type: 'text', nullable: true })
-  passwordHash: string | null; // Nullable for guests
+  password: string | null; // Nullable for guests
 
   @Column({ type: 'varchar', length: 20, default: 'user' })
   role: string; // 'user', 'admin', 'guest'

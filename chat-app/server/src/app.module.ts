@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { AppService } from './app.service';
       password: process.env.DB_PASS, // Database password from .env
       database: process.env.DB_NAME, // Database name from .env
       entities: [
-        /* your entities here */
+       User
       ], // Add your entities (models)
       synchronize: true, // Set to false in production (avoid overwriting data)
     }),

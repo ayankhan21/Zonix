@@ -29,12 +29,12 @@ dependencies:
   aws-sdk:
     specifier: ^2.1692.0
     version: 2.1692.0
+  bcryptjs:
+    specifier: ^2.4.3
+    version: 2.4.3
   class-transformer:
     specifier: ^0.5.1
     version: 0.5.1
-  class-transformer-validator:
-    specifier: ^0.9.1
-    version: 0.9.1(class-transformer@0.5.1)(class-validator@0.14.1)
   class-validator:
     specifier: ^0.14.1
     version: 0.14.1
@@ -1920,6 +1920,10 @@ packages:
     resolution: {integrity: sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==}
     engines: {node: ^4.5.0 || >= 5.9}
 
+  /bcryptjs@2.4.3:
+    resolution: {integrity: sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ==}
+    dev: false
+
   /binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
@@ -2108,16 +2112,6 @@ packages:
   /cjs-module-lexer@1.4.1:
     resolution: {integrity: sha512-cuSVIHi9/9E/+821Qjdvngor+xpnlwnuwIyZOaLmHBVdXL+gP+I6QQB9VkO7RI77YIcTV+S1W9AreJ5eN63JBA==}
     dev: true
-
-  /class-transformer-validator@0.9.1(class-transformer@0.5.1)(class-validator@0.14.1):
-    resolution: {integrity: sha512-83/KFCyd6UiiwH6PlQS5y17O5TTx58CawvNI+XdrMs0Ig9QI5kiuzRqGcC/WrEpd1F7i4KIxCwdn6m4B6fl0jw==}
-    peerDependencies:
-      class-transformer: '>=0.2.3'
-      class-validator: '>=0.12.0'
-    dependencies:
-      class-transformer: 0.5.1
-      class-validator: 0.14.1
-    dev: false
 
   /class-transformer@0.5.1:
     resolution: {integrity: sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw==}
