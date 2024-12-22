@@ -8,8 +8,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './users/entities/user.entity';
 import { ChatGateway } from './chat/chat.gateway';
-import { ChatModule } from './chat/chat.module';
 import { MessagesModule } from './messages/messages.module';
+import { ChatModule } from './Modules/chat.module';
 
 @Module({
   imports: [
