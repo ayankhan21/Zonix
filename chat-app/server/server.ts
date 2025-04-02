@@ -3,9 +3,19 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import "./db"; // This will automatically connect to PostgreSQL
+import { AppDataSource } from "./db"; // Import your database connection
 
 dotenv.config(); // Load environment variables
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log("Database connected successfully!");
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((error) => console.error("Database connection failed:", error));
 
 const app = express();
 const httpServer = createServer(app);

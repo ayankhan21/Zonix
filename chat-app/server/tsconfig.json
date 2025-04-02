@@ -4,7 +4,9 @@
       "moduleResolution": "NodeNext",
       "target": "ESNext",
       "esModuleInterop": true,
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
+      "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
     }
   }
   
